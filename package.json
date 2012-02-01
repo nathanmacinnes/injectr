@@ -17,31 +17,27 @@
     "main" : "lib/injectr.js",
     "bugs" : {
         "email" : "nathan@macinn.es",
-        "web" : "https://github.com/nathanmacinnes/injectr/issues"
+        "url" : "https://github.com/nathanmacinnes/injectr/issues"
     },
-    "licenses" : [
-        {
-            "type" : "MIT",
-            "url" : "http: //www.opensource.org/licenses/mit-license.php"
-        }
-    ],
-    "repositories" : [
-        {
-            "type" : "git",
-            "url" : "https://github.com/nathanmacinnes/injectr"
-        }
-    ],
-    "engines" : {}
+    "licenses" : {
+        "type" : "MIT",
+        "url" : "http: //www.opensource.org/licenses/mit-license.php"
+    },
+    "repositories" : {
+        "type" : "git",
+        "url" : "https://github.com/nathanmacinnes/injectr"
+    },
+    "engines" : {
         "node" : "0.6.x"
     },
-    "devDependencies" : [
-        "qunit" : ">=0.2"
-    ],
+    "devDependencies" : {
+        "unit" : ">=0.2"
+    },
     "scripts" : {
         "test" : "make test"
     },
-    "directories" : [
+    "directories" : {
         "lib" : "lib",
         "test" : "test"
-    ]
+    }
 }
