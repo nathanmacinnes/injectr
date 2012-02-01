@@ -1,0 +1,47 @@
+{
+    "name" : "injectr",
+    "version" : "0.1.0",
+    "description" : "Finally, a solution to node.js dependency injection",
+    "keywords" : [
+        "dependency",
+        "injection",
+        "mock",
+        "unit",
+        "test"
+    ],
+    "author" : {
+        "name" : "Nathan MacInnes",
+        "email" : "nathan@macinn.es",
+        "web" : "http://macinn.es"
+    },
+    "main" : "lib/injectr.js",
+    "bugs" : {
+        "email" : "nathan@macinn.es",
+        "web" : "https://github.com/nathanmacinnes/injectr/issues"
+    },
+    "licenses" : [
+        {
+            "type" : "MIT",
+            "url" : "http: //www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "repositories" : [
+        {
+            "type" : "git",
+            "url" : "https://github.com/nathanmacinnes/injectr"
+        }
+    ],
+    "engines" : {}
+        "node" : "0.6.x"
+    },
+    "devDependencies" : [
+        "qunit" : ">=0.2"
+    ],
+    "scripts" : {
+        "test" : "make test"
+    },
+    "directories" : [
+        "lib" : "lib",
+        "test" : "test"
+    ]
+}
