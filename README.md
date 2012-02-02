@@ -16,7 +16,7 @@ var myScript = injectr('./lib/myScript.js', {
 });
 ````
 
-Now when you `require('fs')` or `require('crypto')` myScript.js, what you gets
+Now when you `require('fs')` or `require('crypto')` in myScript.js, what you get
 is `mockFs` or `mockCrypto`. It works with relative requires too. Just make
 sure you make the property name exactly the same as what is required in the
 file being tested.
