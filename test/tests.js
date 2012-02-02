@@ -29,3 +29,13 @@ test('will inject mocks', function () {
         });
     equal(requiredStaticVars.staticVars.one, 'a mock value');
 });
+test("will export values properly", function () {
+    var exportTest = injectr('./test/pretend-scripts/export-test.js');
+    equal(exportTest.exportedValue1, 'exported value');
+});
+test("can get local variables", function () {
+    var exportTest = injectr('./test/pretend-scripts/export-test.js', {}, true);
+    equal(exportTest.module.exports.exportedValue1, 'exported value',
+        "exported values now available under .module.exports");
+    equal(exportTest.localVar, 'local');
+});
