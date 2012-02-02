@@ -1,4 +1,5 @@
-var path = require('path');
+var path = require('path'),
+    fs = require('fs');
 
 test('will include the requested file', function () {
     var staticVars = injectr('./test/pretend-scripts/static-vars.js');
@@ -55,4 +56,18 @@ test("has __filename and __dirname values", function () {
     var globals = injectr('./test/pretend-scripts/globals.js');
     equal(globals.dirname, __dirname + '/pretend-scripts');
     equal(globals.filename, __dirname + '/pretend-scripts/globals.js');
+});
+test("will cache file contents for quick loading", function () {
+    var filename = './test/pretend-scripts/new-file.js',
+        oldContent = 'exports.val = 1;',
+        newContent = 'exports.val = 2;',
+        pre,
+        post;
+    fs.writeFileSync(filename, oldContent);
+    pre = injectr(filename);
+    equal(pre.val, 1, "sanity check that we've actually written properly");
+    fs.writeFileSync(filename, newContent);
+    post = injectr(filename);
+    deepEqual(pre, post, "file hasn't been re-loaded");
+    notEqual(pre, post, "but the same object isn't re-used");
 });

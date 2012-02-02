@@ -1,0 +1,1 @@
+exports.val = 2;
