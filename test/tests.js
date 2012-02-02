@@ -39,3 +39,20 @@ test("can get local variables", function () {
         "exported values now available under .module.exports");
     equal(exportTest.localVar, 'local');
 });
+test("has the appropriate global variables", function () {
+    var globals = injectr('./test/pretend-scripts/globals.js');
+    equal(globals.setTimeout, setTimeout);
+    equal(globals.clearTimeout, clearTimeout);
+    equal(globals.setInterval, setInterval);
+    equal(globals.clearInterval, clearInterval);
+    equal(globals.console, console);
+    equal(globals.process.argv, process.argv);
+    equal(globals.process.pid, process.pid);
+    equal(globals.global.urlParams, global.urlParams);
+    equal(globals.global.isLocal, global.isLocal);
+});
+test("has __filename and __dirname values", function () {
+    var globals = injectr('./test/pretend-scripts/globals.js');
+    equal(globals.dirname, __dirname + '/pretend-scripts');
+    equal(globals.filename, __dirname + '/pretend-scripts/globals.js');
+});

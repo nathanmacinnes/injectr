@@ -1,0 +1,1 @@
+exports.st = setTimeout.toString();
