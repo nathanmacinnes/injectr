@@ -71,3 +71,44 @@ test("will cache file contents for quick loading", function () {
     deepEqual(pre, post, "file hasn't been re-loaded");
     notEqual(pre, post, "but the same object isn't re-used");
 });
+test("can add properties to the namespace it runs in", function () {
+    var filename = './test/pretend-scripts/static-vars.js',
+        obj;
+    obj = injectr(filename, {
+        context : {
+            bar : 'baz'
+        }
+    });
+    equal(obj.foo, 'baz');
+});
+test("if a namespace property exists, it'll use the mocks property", function () {
+    var requiredStaticVars = injectr(
+        './test/pretend-scripts/require-static-vars.js',
+        {
+            context : {},
+            mocks : {
+                './static-vars.js' : {
+                    one : 'the real mock value'
+                }
+            },
+            './static-vars.js' : {
+                one : 'a fake'
+            }
+        });
+    equal(requiredStaticVars.staticVars.one, 'the real mock value');
+});
+test("will always use the mocks property if one is provided", function () {
+    var requiredStaticVars = injectr(
+        './test/pretend-scripts/require-static-vars.js',
+        {
+            mocks : {
+                './static-vars.js' : {
+                    one : 'the real mock value'
+                }
+            },
+            './static-vars.js' : {
+                one : 'a fake'
+            }
+        });
+    equal(requiredStaticVars.staticVars.one, 'the real mock value');
+});
