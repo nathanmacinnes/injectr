@@ -1,6 +1,6 @@
 {
     "name" : "injectr",
-    "version" : "0.2.2",
+    "version" : "0.3.0",
     "description" : "Finally, a solution to node.js dependency injection",
     "keywords" : [
         "dependency",
@@ -31,7 +31,7 @@
         "node" : "0.6.x"
     },
     "devDependencies" : {
-        "unit" : ">=0.2"
+        "qunit" : ">=0.2"
     },
     "scripts" : {
         "test" : "make test"
