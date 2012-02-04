@@ -28,4 +28,4 @@ _working directory_, not to the file location as with `require`.
 ## Share it ##
 
 **injectr** is under the [MIT License](http://www.opensource.org/licenses/MIT).
-Pass it around. Or just link to https://github.com/nathanmacinnes/injectr/.
+[Fork it](https://github.com/nathanmacinnes/injectr). Modify it. Pass it around.
