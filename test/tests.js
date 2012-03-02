@@ -15,12 +15,19 @@ test('will require files correctly', function () {
 test('will require modules correctly', function () {
     var requiredPath = injectr('./test/pretend-scripts/require-path.js');
     deepEqual(requiredPath.path, path);
+
+    var requiredPath = injectr('./test/pretend-scripts/require-fs.coffee');
+    deepEqual(requiredPath.fs, fs);
 });
 test('will inject mocks', function () {
     var requiredPath = injectr('./test/pretend-scripts/require-path.js', {
         path : 'this is a mock'
     });
     equal(requiredPath.path, 'this is a mock');
+    var requiredCoffeePath = injectr('./test/pretend-scripts/require-fs.coffee', {
+        fs : 'this is a mock'
+    });
+    equal(requiredCoffeePath.fs, 'this is a mock');
     var requiredStaticVars = injectr(
         './test/pretend-scripts/require-static-vars.js',
         {
@@ -29,6 +36,14 @@ test('will inject mocks', function () {
             }
         });
     equal(requiredStaticVars.staticVars.one, 'a mock value');
+    var requiredExportTest = injectr(
+        './test/pretend-scripts/require-export-test.coffee',
+        {
+            './export-test' : {
+                one : 'a mock value'
+            }
+        });
+    equal(requiredExportTest.exportTest.one, 'a mock value');
 });
 test("will export values properly", function () {
     var exportTest = injectr('./test/pretend-scripts/export-test.js');
