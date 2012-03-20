@@ -11,6 +11,10 @@ test('will require files correctly', function () {
         './test/pretend-scripts/require-static-vars.js');
     equal(requiredStaticVars.staticVars.one, 'this is a string');
     equal(requiredStaticVars.staticVars.two, 2);
+    requiredStaticVars = injectr(
+        './test/pretend-scripts/dir/require-static-vars.js');
+    equal(requiredStaticVars.staticVars.one, 'this is a string');
+    equal(requiredStaticVars.staticVars.two, 2);
 });
 test('will require modules correctly', function () {
     var requiredPath = injectr('./test/pretend-scripts/require-path.js');
