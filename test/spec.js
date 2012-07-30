@@ -82,6 +82,25 @@ describe("injectr", function () {
         context = mockScript.runInNewContext.calls[0].args[0];
         expect(l).to.equal(context.module.exports);
 	});
+	it("should allow an onload callback", function () {
+	    var mockCb = pretendr(function () {});
+	    this.mockFs.readFileSync.returnValue('before');
+	    mockCb.returnValue('after');
+	    this.injectr.onload = mockCb.mock;
+	    this.injectr('filename');
+	    expect(mockCb.calls).to.have.length(1);
+	    expect(mockCb.calls[0].args).to.have.property(0, 'filename')
+	        .and.to.have.property(1, 'before');
+	    expect(this.mockVm.createScript.calls[0].args[0]).to.equal('after');
+	});
+	it("should only run the callback once per file", function () {
+	    var mockCb = pretendr(function () {});
+	    mockCb.returnValue('dummy');
+	    this.injectr.onload = mockCb.mock;
+	    this.injectr('filename');
+	    this.injectr('filename');
+	    expect(mockCb.calls).to.have.length(1);
+	});
 	describe("require function", function () {
 	    it("should get mock libraries if provided", function () {
 	        var context,
