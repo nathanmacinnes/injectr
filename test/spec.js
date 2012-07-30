@@ -8,7 +8,7 @@
 "use strict";
 
 var expect = require("expect.js"),
-	injectr = require("injectr"),
+	injectr = require("../lib/injectr"),
 	pretendr = require("pretendr");
 
 describe("injectr", function () {

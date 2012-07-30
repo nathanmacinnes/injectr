@@ -47,6 +47,7 @@
     "files" : [
        "Makefile",
        "README.md",
+       "LICENSE",
        "lib/",
        "test/"
     ],
