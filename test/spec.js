@@ -13,9 +13,16 @@ var expect = require("expect.js"),
 
 describe("injectr", function () {
     beforeEach(function () {
-		this.mockFs = pretendr(require('fs'));
-		this.mockPath = pretendr(require('path'));
-		this.mockVm = pretendr(require('vm'));
+		this.mockFs = pretendr({
+		    readFileSync : function () {}
+		});
+		this.mockPath = pretendr({
+		    join : function () {},
+		    dirname : function () {}
+		});
+		this.mockVm = pretendr({
+		    createScript : function () {}
+		});
 		this.mockVm.createScript.template({
 		    runInNewContext : function () {},
 		    runInThisContext : function () {}
