@@ -1,0 +1,127 @@
+/*jslint node: true, plusplus: true, stupid: true, nomen: true, indent: 4, maxlen: 80 */
+/*global afterEach: false,
+    beforeEach: false,
+    describe: false,
+    it: false,
+    should: false */
+
+"use strict";
+
+var expect = require("expect.js"),
+	injectr = require("injectr"),
+	pretendr = require("pretendr");
+
+describe("injectr", function () {
+    beforeEach(function () {
+		this.mockFs = pretendr(require('fs'));
+		this.mockPath = pretendr(require('path'));
+		this.mockVm = pretendr(require('vm'));
+		this.mockVm.createScript.template({
+		    runInNewContext : function () {},
+		    runInThisContext : function () {}
+		});
+
+		// this.injectr is the injectr under test
+		// the injectr var is being used to test it
+        this.injectr = injectr('./lib/injectr.js', {
+			fs : this.mockFs.mock,
+			path : this.mockPath.mock,
+			vm : this.mockVm.mock
+		});
+    });
+	it("should read in the selected file", function () {
+		var lib = this.injectr('filename');
+		expect(this.mockFs.readFileSync.calls).to.have.length(1);
+		expect(this.mockFs.readFileSync.calls[0].args)
+			.to.have.property(0, 'filename')
+			.and.to.have.property(1, 'utf8');
+	});
+	it("should only read the file once per file", function () {
+	    this.mockFs.readFileSync.returnValue('dummy');
+	    this.injectr('filename');
+	    this.injectr('filename');
+	    expect(this.mockFs.readFileSync.calls).to.have.length(1);
+	    this.injectr('filename2');
+	    this.injectr('filename2');
+	    expect(this.mockFs.readFileSync.calls).to.have.length(2);
+	});
+	it("should create a script from the file", function () {
+	    var call,
+	        lib;
+	    this.mockFs.readFileSync.returnValue('dummy script');
+	    lib = this.injectr('filename');
+	    expect(this.mockVm.createScript.calls).to.have.length(1);
+	    call = this.mockVm.createScript.calls[0];
+	    expect(call.args[0]).to.equal('dummy script');
+	    expect(call.args[1]).to.equal('filename');
+	});
+	it("should run the script in a new context", function () {
+	    var mockScript,
+	        lib;
+	    lib = this.injectr('filename');
+	    mockScript = this.mockVm.createScript.calls[0].pretendr;
+	    expect(mockScript.runInNewContext.calls).to.have.length(1);
+	});
+	it("should have a predefined module.exports", function () {
+        var context,
+            mockScript,
+            l;
+        l = this.injectr('filename');
+        mockScript = this.mockVm.createScript.calls[0].pretendr;
+        context = mockScript.runInNewContext.calls[0].args[0];
+        expect(context).to.have.property('module');
+        expect(context.module).to.have.property('exports');
+        expect(context.module.exports).to.be.an('object');
+	});
+	it("should return module.exports", function () {
+        var context,
+            mockScript,
+            l;
+        l = this.injectr('filename');
+        mockScript = this.mockVm.createScript.calls[0].pretendr;
+        context = mockScript.runInNewContext.calls[0].args[0];
+        expect(l).to.equal(context.module.exports);
+	});
+	describe("require function", function () {
+	    it("should get mock libraries if provided", function () {
+	        var context,
+	            customLib = {},
+	            mockScript,
+	            l;
+            l = this.injectr('filename', {
+                customLib : customLib
+            });
+	        mockScript = this.mockVm.createScript.calls[0].pretendr;
+	        context = mockScript.runInNewContext.calls[0].args[0];
+	        expect(context.require('customLib')).to.equal(customLib);
+	    });
+	    it("should require libraries otherwise", function () {
+	        var context,
+	            mockScript,
+	            l;
+	        l = this.injectr('filename', {});
+	        mockScript = this.mockVm.createScript.calls[0].pretendr;
+	        context = mockScript.runInNewContext.calls[0].args[0];
+	        expect(JSON.stringify(context.require('fs')))
+	            .to.eql(JSON.stringify(require('fs')));
+	    });
+	    it("should resolve directories to the injectr'd file", function () {
+	        var args,
+	            l,
+	            mockScript,
+	            req;
+	        l = this.injectr('filename');
+	        mockScript = this.mockVm.createScript.calls[0].pretendr;
+	        req = mockScript.runInNewContext.calls[0].args[0].require;
+	        this.mockPath.dirname.returnValue('/directory/');
+	        this.mockPath.join.returnValue('fs');
+	        req('./a-local-module');
+	        args = this.mockPath.dirname.calls[0].args;
+	        expect(args).to.have.property(0, 'filename');
+	        args = this.mockPath.join.calls[0].args;
+	        expect(args[0]).to.equal('/directory/');
+	        expect(args[1]).to.equal('./a-local-module');
+	        expect(JSON.stringify(l)).to.equal(JSON.stringify(require('fs')));
+	    });
+	});
+});
