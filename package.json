@@ -50,6 +50,5 @@
        "LICENSE",
        "lib/",
        "test/"
-    ],
-    "main" : "lib/injectr"
+    ]
 }
