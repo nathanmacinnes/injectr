@@ -27,13 +27,17 @@ describe("injectr", function () {
 		    runInNewContext : function () {},
 		    runInThisContext : function () {}
 		});
+		this.mockCoffeeScript = pretendr({
+		    compile : function () {}
+		});
 
 		// this.injectr is the injectr under test
 		// the injectr var is being used to test it
         this.injectr = injectr('./lib/injectr.js', {
 			fs : this.mockFs.mock,
 			path : this.mockPath.mock,
-			vm : this.mockVm.mock
+			vm : this.mockVm.mock,
+			'coffee-script' : this.mockCoffeeScript.mock
 		});
     });
 	it("should read in the selected file", function () {
@@ -148,6 +152,17 @@ describe("injectr", function () {
 	        expect(args[0]).to.equal('/directory/');
 	        expect(args[1]).to.equal('./a-local-module');
 	        expect(JSON.stringify(l)).to.equal(JSON.stringify(require('fs')));
+	    });
+	    it("should compile coffee-script files before running", function () {
+	        var out;
+	        this.mockCoffeeScript.compile.returnValue('compiled');
+	        out = this.injectr.onload('file.coffee', 'uncompiled');
+	        expect(out).to.equal('compiled');
+	        this.mockCoffeeScript.compile.returnValue('another compiled');
+	        out = this.injectr.onload('another.coffee', '');
+	        expect(out).to.equal('another compiled');
+	        out = this.injectr.onload('non-coffee', 'javascript');
+	        expect(out).to.equal('javascript');
 	    });
 	});
 	describe("with context argument", function () {

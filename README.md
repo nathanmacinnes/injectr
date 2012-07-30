@@ -42,16 +42,10 @@ include mocks of only the bits that your script needs.
 
 ### CoffeeScript ###
 
-To use **injectr** with CoffeeScript, use the `onload` callback.
-
-````javascript
-var injectr.onload = function (file, content) {
-    if (file.match(/\.coffee$/)) {
-        return require('coffee-script').compile(content, { filename: file });
-    }
-    return content;
-}
-````
+**injectr** compiles any *.coffee files for you, so you can test your
+CoffeeScript too. The default settings can be changed by overwriting the
+`injectr.onload` function. It takes the filename and file contents as
+arguments, and returns the compiled script.
 
 ## Share it ##
 
