@@ -143,4 +143,20 @@ describe("injectr", function () {
 	        expect(JSON.stringify(l)).to.equal(JSON.stringify(require('fs')));
 	    });
 	});
+	describe("with context argument", function () {
+	    it("should use the provided context to run the script", function () {
+	        var context = {},
+	            mockScript;
+	        this.injectr('filename', null, context);
+	        mockScript = this.mockVm.createScript.calls[0].pretendr;
+	        expect(mockScript.runInNewContext.calls[0].args[0])
+	            .to.equal(context);
+	    });
+	    it("should still have module and require objects", function () {
+	        var context = {};
+	        this.injectr('filename', null, context);
+	        expect(context).to.have.property('module')
+	            .and.to.have.property('require');
+	    });
+	});
 });
