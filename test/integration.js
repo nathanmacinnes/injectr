@@ -18,6 +18,7 @@ describe("basic injectr", function () {
         this.testFileDirectory = __dirname + '/test-scripts/';
         this.testFile = this.testFileDirectory + 'test-file.js';
         this.testRequire = 'test-require.js';
+        this.testRequire2 = '../test-require2.js';
         this.injectr = require('../lib/injectr');
         fileContent = 'module.exports = {' +
             '    a : "result",' +
@@ -26,32 +27,34 @@ describe("basic injectr", function () {
             '    },' +
             '    c : function () {' +
             '        return require("./' + this.testRequire + '");' +
+            '    },' +
+            '    d : function () {' +
+            '        return require("' + this.testRequire2 + '");' +
             '    }' +
             '};';
         fs.exists(this.testFileDirectory, function (exists) {
-            var testFileDone = false,
-                testRequireDone = false,
+            var testFilesToDo = 3,
                 write;
             write = function () {
+                var complete = function () {
+                    if (!--testFilesToDo) {
+                        done();
+                    }
+                };
                 fs.writeFile(
                     self.testFile,
                     fileContent,
-                    function () {
-                        if (testRequireDone) {
-                            return done();
-                        }
-                        testFileDone = true;
-                    }
+                    complete
                 );
                 fs.writeFile(
                     self.testFileDirectory + self.testRequire,
                     'module.exports = 4;',
-                    function () {
-                        if (testFileDone) {
-                            return done();
-                        }
-                        testRequireDone = true;
-                    }
+                    complete
+                );
+                fs.writeFile(
+                    self.testFileDirectory + self.testRequire2,
+                    'module.exports = 5;',
+                    complete
                 );
             };
             if (!exists) {
@@ -62,12 +65,16 @@ describe("basic injectr", function () {
         });
     });
     afterEach(function (done) {
-        var self = this;
-        fs.unlink(this.testFile, function () {
-            fs.unlink(self.testFileDirectory + self.testRequire, function () {
-                fs.rmdir(self.testFileDirectory, done);
-            });
-        });
+        var self = this,
+            testFilesToDo = 2,
+            complete = function () {
+                if (!--testFilesToDo) {
+                    fs.rmdir(self.testFileDirectory, done);
+                }
+            };
+        fs.unlink(this.testFile, complete);
+        fs.unlink(self.testFileDirectory + self.testRequire, complete);
+        fs.unlink(self.testFileDirectory + self.testRequire2, complete);
     });
     it("should load and run scripts, and return the result", function () {
         var mod = this.injectr(this.testFile);
@@ -87,5 +94,12 @@ describe("basic injectr", function () {
         mod = this.injectr(this.testFile, {
         });
         expect(mod.c()).to.equal(4);
+    });
+    it("should successfully resolve dirs to a ../ file", function () {
+        var mod,
+            mockFs = {};
+        mod = this.injectr(this.testFile, {
+        });
+        expect(mod.d()).to.equal(5);
     });
 });
