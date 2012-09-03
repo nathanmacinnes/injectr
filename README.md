@@ -8,13 +8,11 @@ _Finally, a solution to node.js dependency injection_
 
 ## Use it ##
 
-````javascript
-var injectr = require('injectr');
-var myScript = injectr('./lib/myScript.js', {
-    fs : mockFs,
-    crypto : mockCrypto
-});
-````
+    var injectr = require('injectr');
+    var myScript = injectr('./lib/myScript.js', {
+        fs : mockFs,
+        crypto : mockCrypto
+    });
 
 Now when you `require('fs')` or `require('crypto')` in myScript.js, what you
 get is `mockFs` or `mockCrypto`.
@@ -29,12 +27,10 @@ _working directory_, not to the file location as with `require`.
 an optional third argument. Provide an object, and **injectr** will modify it
 as necessary and use that as the context.
 
-````javascript
-var myScript = injectr('./lib/myScript.js', {}, {
-    Date : mockDate,
-    setTimeout : mockSetTimeout
-});
-````
+    var myScript = injectr('./lib/myScript.js', {}, {
+        Date : mockDate,
+        setTimeout : mockSetTimeout
+    });
 
 As of version 0.4, **injectr** doesn't create a full node.js context for you to
 use. Instead, it isolates your script in its own sandbox, allowing you to
