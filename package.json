@@ -33,7 +33,7 @@
     "devDependencies" : {
         "mocha" : ">=1.0.0",
 		"expect.js" : ">=0.1.0",
-		"jslint" : ">=0.1.0"
+		"jshint" : "~2.5.0"
     },
     "scripts" : {
         "test" : "make test",

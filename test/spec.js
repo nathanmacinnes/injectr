@@ -1,10 +1,3 @@
-/*jslint node: true, plusplus: true, stupid: true, nomen: true, indent: 4, maxlen: 80 */
-/*global afterEach: false,
-    beforeEach: false,
-    describe: false,
-    it: false,
-    should: false */
-
 "use strict";
 
 var expect = require("expect.js"),

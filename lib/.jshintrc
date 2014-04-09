@@ -1,0 +1,22 @@
+{
+    "globals" : {
+        "window" : false,
+        "document" : false
+    },
+    "camelcase" : true,
+    "curly" : true,
+    "eqeqeq" : true,
+    "forin" : true,
+    "freeze" : true,
+    "immed" : true,
+    "indent" : 4,
+    "latedef" : "nofunc",
+    "newcap" : true,
+    "noarg" : true,
+    "node" : true,
+    "nomen" : true,
+    "undef" : true,
+    "unused" : true,
+    "trailing" : true,
+    "maxlen" : 80
+}

@@ -3,6 +3,6 @@ test:
 test-all:
 	./node_modules/.bin/mocha
 lint:
-	./node_modules/.bin/jslint ./lib/injectr.js ./test/spec.js ./test/integration.js
+	./node_modules/.bin/jshint ./lib/injectr.js ./test/spec.js ./test/integration.js
 
 .PHONY: test
