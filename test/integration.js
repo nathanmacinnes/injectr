@@ -8,8 +8,7 @@
 "use strict";
 
 var expect = require("expect.js"),
-    fs = require('fs'),
-	injectr = require("../lib/injectr");
+    fs = require('fs');
 
 describe("basic injectr", function () {
     beforeEach(function (done) {
@@ -37,7 +36,7 @@ describe("basic injectr", function () {
                 write;
             write = function () {
                 var complete = function () {
-                    if (!--testFilesToDo) {
+                    if (--testFilesToDo === 0) {
                         done();
                     }
                 };
@@ -68,7 +67,7 @@ describe("basic injectr", function () {
         var self = this,
             testFilesToDo = 2,
             complete = function () {
-                if (!--testFilesToDo) {
+                if (--testFilesToDo === 0) {
                     fs.rmdir(self.testFileDirectory, done);
                 }
             };
@@ -89,15 +88,13 @@ describe("basic injectr", function () {
         expect(mod.b()).to.equal(mockFs);
     });
     it("should successfully resolve dirs to the mocking file", function () {
-        var mod,
-            mockFs = {};
+        var mod;
         mod = this.injectr(this.testFile, {
         });
         expect(mod.c()).to.equal(4);
     });
     it("should successfully resolve dirs to a ../ file", function () {
-        var mod,
-            mockFs = {};
+        var mod;
         mod = this.injectr(this.testFile, {
         });
         expect(mod.d()).to.equal(5);
