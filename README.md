@@ -18,8 +18,10 @@ Now when you `require('fs')` or `require('crypto')` in myScript.js, what you
 get is `mockFs` or `mockCrypto`.
 
 Treat **injectr** like `require` for your tests, with a second argument to pass
-in your mocks. The only thing to note is that paths are relative to the
-_working directory_, not to the file location as with `require`.
+in your mocks.
+
+**Paths are now relative to the current file, just like require.** Please update
+your tests if you are upgrading from v0.4 or below.
 
 ### Context ###
 
