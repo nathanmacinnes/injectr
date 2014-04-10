@@ -9,6 +9,7 @@ describe("basic injectr", function () {
             self = this;
         this.testFileDirectory = __dirname + '/test-scripts/';
         this.testFile = this.testFileDirectory + 'test-file.js';
+        this.relativeTestFile = './test-scripts/test-file.js';
         this.testRequire = 'test-require.js';
         this.testRequire2 = '../test-require2.js';
         this.injectr = require('../lib/injectr');
@@ -69,26 +70,26 @@ describe("basic injectr", function () {
         fs.unlink(self.testFileDirectory + self.testRequire2, complete);
     });
     it("should load and run scripts, and return the result", function () {
-        var mod = this.injectr(this.testFile);
+        var mod = this.injectr(this.relativeTestFile);
         expect(mod).to.have.property('a', 'result');
     });
     it("should run scripts replacing mocks with passed objects", function () {
         var mod,
             mockFs = {};
-        mod = this.injectr(this.testFile, {
+        mod = this.injectr(this.relativeTestFile, {
             fs : mockFs
         });
         expect(mod.b()).to.equal(mockFs);
     });
     it("should successfully resolve dirs to the mocking file", function () {
         var mod;
-        mod = this.injectr(this.testFile, {
+        mod = this.injectr(this.relativeTestFile, {
         });
         expect(mod.c()).to.equal(4);
     });
     it("should successfully resolve dirs to a ../ file", function () {
         var mod;
-        mod = this.injectr(this.testFile, {
+        mod = this.injectr(this.relativeTestFile, {
         });
         expect(mod.d()).to.equal(5);
     });

@@ -13,6 +13,7 @@ describe("injectr", function () {
             join : function () {},
             dirname : function () {}
         });
+        this.mockPath.join.returnValue('dir/filename');
         this.mockVm = pretendr({
             createScript : function () {}
         });
@@ -26,18 +27,33 @@ describe("injectr", function () {
 
         // this.injectr is the injectr under test
         // the injectr var is being used to test it
-        this.injectr = injectr('./lib/injectr.js', {
+        this.injectr = injectr('../lib/injectr.js', {
             fs : this.mockFs.mock,
             path : this.mockPath.mock,
             vm : this.mockVm.mock,
             'coffee-script' : this.mockCoffeeScript.mock
+        }, {
+            module : {
+                parent : module
+            }
         });
+    });
+    it("should attempt to resolve the selected file", function () {
+        this.mockPath.dirname.returnValue('dirname');
+        this.injectr('./filename');
+        expect(this.mockPath.dirname.calls).to.have.length(1);
+        expect(this.mockPath.dirname.calls[0].args)
+            .to.have.property(0, __filename);
+        expect(this.mockPath.join.calls).to.have.length(1);
+        expect(this.mockPath.join.calls[0].args)
+            .to.have.property(0, 'dirname')
+            .and.to.have.property(1, './filename');
     });
     it("should read in the selected file", function () {
         this.injectr('filename');
         expect(this.mockFs.readFileSync.calls).to.have.length(1);
         expect(this.mockFs.readFileSync.calls[0].args)
-            .to.have.property(0, 'filename')
+            .to.have.property(0, 'dir/filename')
             .and.to.have.property(1, 'utf8');
     });
     it("should only read the file once per file", function () {
@@ -45,6 +61,7 @@ describe("injectr", function () {
         this.injectr('filename');
         this.injectr('filename');
         expect(this.mockFs.readFileSync.calls).to.have.length(1);
+        this.mockPath.join.returnValue('dir/filename2');
         this.injectr('filename2');
         this.injectr('filename2');
         expect(this.mockFs.readFileSync.calls).to.have.length(2);
@@ -56,7 +73,7 @@ describe("injectr", function () {
         expect(this.mockVm.createScript.calls).to.have.length(1);
         call = this.mockVm.createScript.calls[0];
         expect(call.args[0]).to.equal('dummy script');
-        expect(call.args[1]).to.equal('filename');
+        expect(call.args[1]).to.equal('dir/filename');
     });
     it("should run the script in a new context", function () {
         var mockScript;
@@ -90,7 +107,7 @@ describe("injectr", function () {
         this.injectr.onload = mockCb.mock;
         this.injectr('filename');
         expect(mockCb.calls).to.have.length(1);
-        expect(mockCb.calls[0].args).to.have.property(0, 'filename')
+        expect(mockCb.calls[0].args).to.have.property(0, 'dir/filename')
             .and.to.have.property(1, 'before');
         expect(this.mockVm.createScript.calls[0].args[0]).to.equal('after');
     });
@@ -134,9 +151,9 @@ describe("injectr", function () {
             this.mockPath.dirname.returnValue('/directory/');
             this.mockPath.join.returnValue('fs');
             req('./a-local-module');
-            args = this.mockPath.dirname.calls[0].args;
-            expect(args).to.have.property(0, 'filename');
-            args = this.mockPath.join.calls[0].args;
+            args = this.mockPath.dirname.calls[1].args;
+            expect(args).to.have.property(0, 'dir/filename');
+            args = this.mockPath.join.calls[1].args;
             expect(args[0]).to.equal('/directory/');
             expect(args[1]).to.equal('./a-local-module');
             expect(JSON.stringify(l)).to.equal(JSON.stringify(require('fs')));
