@@ -9,7 +9,7 @@ _Finally, a solution to node.js dependency injection_
 ## Use it ##
 
     var injectr = require('injectr');
-    var myScript = injectr('../lib/myScript.js', {
+    var myScript = injectr('./lib/myScript.js', {
         fs : mockFs,
         crypto : mockCrypto
     });
@@ -29,7 +29,7 @@ your tests if you are upgrading from v0.4 or below.
 an optional third argument. Provide an object, and **injectr** will modify it
 as necessary and use that as the context.
 
-    var myScript = injectr('../lib/myScript.js', {}, {
+    var myScript = injectr('./lib/myScript.js', {}, {
         Date : mockDate,
         setTimeout : mockSetTimeout
     });
