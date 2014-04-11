@@ -119,7 +119,21 @@ describe("injectr", function () {
         this.injectr('filename');
         expect(mockCb.calls).to.have.length(1);
     });
-    describe("require function", function () {
+    it("should use the provided context to run the script", function () {
+        var context = {},
+            mockScript;
+        this.injectr('filename', null, context);
+        mockScript = this.mockVm.createScript.calls[0].pretendr;
+        expect(mockScript.runInNewContext.calls[0].args[0])
+            .to.equal(context);
+    });
+    it("should still have module and require objects", function () {
+        var context = {};
+        this.injectr('filename', null, context);
+        expect(context).to.have.property('module')
+            .and.to.have.property('require');
+    });
+    describe("#require", function () {
         it("should get mock libraries if provided", function () {
             var context,
                 customLib = {},
@@ -168,22 +182,6 @@ describe("injectr", function () {
             expect(out).to.equal('another compiled');
             out = this.injectr.onload('non-coffee', 'javascript');
             expect(out).to.equal('javascript');
-        });
-    });
-    describe("with context argument", function () {
-        it("should use the provided context to run the script", function () {
-            var context = {},
-                mockScript;
-            this.injectr('filename', null, context);
-            mockScript = this.mockVm.createScript.calls[0].pretendr;
-            expect(mockScript.runInNewContext.calls[0].args[0])
-                .to.equal(context);
-        });
-        it("should still have module and require objects", function () {
-            var context = {};
-            this.injectr('filename', null, context);
-            expect(context).to.have.property('module')
-                .and.to.have.property('require');
         });
     });
 });
