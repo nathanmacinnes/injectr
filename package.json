@@ -1,6 +1,6 @@
 {
     "name" : "injectr",
-    "version" : "0.5.0",
+    "version" : "0.5.1",
     "description" : "Finally, a solution to node.js dependency injection",
     "keywords" : [
         "dependency injection",
@@ -32,7 +32,8 @@
     "devDependencies" : {
         "mocha" : "1.0.0 - 1.18.x",
         "expect.js" : "0.1.0 - 0.3.x",
-        "jshint" : "~2.5"
+        "jshint" : "~2.5",
+        "pretendr" : "~0.5"
     },
     "scripts" : {
         "test" : "make test",
