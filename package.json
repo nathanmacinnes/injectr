@@ -1,57 +1,57 @@
 {
-    "name" : "injectr",
-    "version" : "0.5.1",
-    "description" : "Finally, a solution to node.js dependency injection",
-    "keywords" : [
-        "dependency injection",
-        "mock",
-        "unit",
-        "test"
-    ],
-    "author" : {
-        "name" : "Nathan MacInnes",
-        "email" : "nathan@macinn.es",
-        "web" : "http://macinn.es"
-    },
-    "main" : "lib/injectr.js",
-    "bugs" : {
-        "email" : "nathan@macinn.es",
-        "url" : "https://github.com/nathanmacinnes/injectr/issues"
-    },
-    "licenses" : {
-        "type" : "MIT",
-        "url" : "http: //www.opensource.org/licenses/mit-license.php"
-    },
-    "repository" : {
-        "type" : "git",
-        "url" : "https://github.com/nathanmacinnes/injectr"
-    },
-    "engines" : {
-        "node" : ">=0.6.x"
-    },
-    "devDependencies" : {
-        "mocha" : "1.0.0 - 1.18.x",
-        "expect.js" : "0.1.0 - 0.3.x",
-        "grunt" : "^0.4.4",
-        "grunt-contrib-jshint" : "^0.10.0",
-        "grunt-contrib-watch" : "^0.6.1",
-        "grunt-mocha-test" : "^0.10.2",
-        "jshint" : "~2.5",
-        "pretendr" : "~0.5"
-    },
-    "scripts" : {
-        "test" : "grunt test",
-        "lint" : "grunt lint"
-    },
-    "directories" : {
-        "lib" : "lib",
-        "test" : "test"
-    },
-    "files" : [
-       "Makefile",
-       "README.md",
-       "LICENSE",
-       "lib/",
-       "test/"
-    ]
+  "name": "injectr",
+  "version": "0.5.1",
+  "description": "Finally, a solution to node.js dependency injection",
+  "keywords": [
+    "dependency injection",
+    "mock",
+    "unit",
+    "test"
+  ],
+  "author": {
+    "name": "Nathan MacInnes",
+    "email": "nathan@macinn.es",
+    "web": "http://macinn.es"
+  },
+  "main": "lib/injectr.js",
+  "bugs": {
+    "email": "nathan@macinn.es",
+    "url": "https://github.com/nathanmacinnes/injectr/issues"
+  },
+  "licenses": {
+    "type": "MIT",
+    "url": "http: //www.opensource.org/licenses/mit-license.php"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanmacinnes/injectr"
+  },
+  "engines": {
+    "node": ">=0.6.x"
+  },
+  "devDependencies": {
+    "expect.js": "0.1.0 - 0.3.x",
+    "grunt": "^0.4.4",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.10.2",
+    "jshint": "~2.5",
+    "mocha": "^1.18.2",
+    "pretendr": "~0.5"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "lint": "grunt lint"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "Makefile",
+    "README.md",
+    "LICENSE",
+    "lib/",
+    "test/"
+  ]
 }
