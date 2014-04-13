@@ -192,4 +192,49 @@ describe("injectr", function () {
             expect(out).to.equal('javascript');
         });
     });
+    describe(".context", function () {
+        beforeEach(function () {
+            this.globals = {
+                'process' : {},
+                'console' : {},
+                'Buffer' : {},
+                'setTimeout' : {},
+                'clearTimeout' : {},
+                'setInterval' : {},
+                'clearInterval' : {}
+            };
+            this.globals.global = this.globals;
+            this.injectr = injectr('../lib/injectr.js', {}, this.globals);
+        });
+        it("should have passed in properties", function () {
+            expect(this.injectr.context({
+                foo : 'bar'
+            })).to.have.property('foo', 'bar');
+        });
+        it("should add global properties to the returned object", function () {
+            var context = this.injectr.context();
+            expect(context)
+                .to.have.property('global')
+                .and.to.have.property('process', this.globals.process)
+                .and.to.have.property('console', this.globals.console)
+                .and.to.have.property('Buffer', this.globals.Buffer)
+                .and.to.have.property('setTimeout', this.globals.setTimeout)
+                .and.to.have.property('clearTimeout', this.globals.clearTimeout)
+                .and.to.have.property('setInterval', this.globals.setInterval)
+                .and.to.have.property('clearInterval', this.globals.clearInterval);
+            expect(context.global).to.equal(context);
+        });
+        it("should leave the original object undefined", function () {
+            var context,
+                obj = {};
+            context = this.injectr.context(obj);
+            expect(context).to.have.property('process');
+            expect(obj).not.to.have.property('process');
+        });
+        it("should not overwrite custom properties with globals", function () {
+            expect(this.injectr.context({
+                'process' : 'aaa'
+            })).to.have.property('process', 'aaa');
+        });
+    });
 });
